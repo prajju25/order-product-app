@@ -2,8 +2,7 @@ import React from 'react';
 import { Grid, GridColumn as Column } from '@progress/kendo-react-grid';
 import { orderBy } from '@progress/kendo-data-query';
 
-import { orderSave, fetchAllProducts } from '../../services/apiService';
-import products from '../../data/products.json';
+import { orderSave, fetchAllProducts, searchProducts } from '../../services/apiService';
 import { ActionCell } from './ActionCell';
 
 export class ProductSearch extends React.Component {
@@ -24,51 +23,76 @@ export class ProductSearch extends React.Component {
             rows: [],
             loading: false,
             userInput: "",
-            productsList: products,
+            productsList: [],
             orderCart: []
         };
     }
 
     componentWillMount(){
         fetchAllProducts().then(res=>{
-            console.log(res);
+            console.log(res);            
+            let response = res.data !== null && res.data !== '' ? res.data:[];
             this.setState(()=>({
-                productsList: res.data
+                productsList: response
             }));
         }).catch(err=>console.log(err));
     }
 
-    onChange = (event) => {
-        const userInput = event.currentTarget.value
-    
-        const rows = this.state.productsList.filter(
-          product =>
-            product.productName.toLowerCase().indexOf(userInput.toLowerCase()) > -1
-        );
-    
+    onChange(event){
+        const userInput = event.currentTarget.value;
+        
+        /* const rows = this.state.productsList.filter(
+            product =>
+              product.productName.toLowerCase().indexOf(userInput.toLowerCase()) > -1
+        ); */
+        if(userInput && userInput !== ''){
+            searchProducts(userInput).then((res)=>{
+                console.log(res);
+                let response = res.data !== null && res.data !== '' ? res.data:[];
+                this.setState(()=>({
+                    rows: response,
+                    loading: true
+                }));
+            });
+        } else {
+            fetchAllProducts().then(res=>{
+                console.log(res);            
+                let response = res.data !== null && res.data !== '' ? res.data:[];
+                this.setState(()=>({
+                    productsList: response
+                }));
+            }).catch(err=>console.log(err));
+        }
         this.setState(()=>({
-          rows: rows,
-          loading: true,
-          userInput: event.target.value,
+            userInput: event.target.value,
         }));
     }
     
-    onClick = (event) => {
+    onClick(event){
         this.setState(()=>({
-          rows: [],
           loading: false,
           userInput: event.target.innerText,
         }));
+        searchProducts(event.target.innerText).then((res)=>{
+            console.log(res);
+            let response = res.data !== null && res.data !== '' ? res.data:[];
+            this.setState(()=>({
+                productsList: response
+            }));
+        });
     }
 
-    orderProduct = () =>{
+    orderProduct(){
         let req={
             "orderId": Math.floor(Math.random()*90000) + 10000,
             "userId": 32324,
-            "product": this.state.orderCart
+            "products": this.state.orderCart
         }
         orderSave(req).then(res=>{
             console.log(res);
+            this.setState(()=>({
+                orderCart: []
+            }));
         }).catch(err=>console.log(err));
     }
 
@@ -156,7 +180,7 @@ export class ProductSearch extends React.Component {
                         <Column title="Actions" width="150px" cell={this.cartColumn}/>
                     </Grid>
                     </div>
-                    <input type="submit" onClick={this.orderProduct} value="Submit Order"/>
+                    <input type="submit" onClick={this.orderProduct.bind(this)} value="Submit Order" disabled={this.state.orderCart.length===0}/>
                 </div>
             </div>
         );

@@ -3,7 +3,6 @@ import React from 'react';
 import { Grid, GridColumn as Column } from '@progress/kendo-react-grid';
 import { orderBy } from '@progress/kendo-data-query';
 
-import userProducts from '../../data/userProducts.json';
 import { fetchUserOrders } from '../../services/apiService'
 
 export class UserOrders extends React.Component {
@@ -15,16 +14,17 @@ export class UserOrders extends React.Component {
                 field: 'ProductName',
                 dir: 'asc'
             }],
-            userOrders: userProducts
+            userOrders: []
         };
-        let req = {
-            userId: 6382372
-        }
-        fetchUserOrders(req).then(res=>{
+    }
+
+    componentWillMount(){
+        let userId= 32324;
+        fetchUserOrders(userId).then(res=>{
             console.log(res);
-            //TODO:fetch user orders
+            let response = res.data !== null && res.data !== ''?res.data:[];
             this.setState(()=>({
-                userOrders: userProducts
+                userOrders: response
             }));
         }).catch(err=>console.log(err));
     }
@@ -39,10 +39,9 @@ export class UserOrders extends React.Component {
                         sort: e.sort
                     });
                 }}>
-                    <Column field="ProductID" title="ID" width="100px" />
-                    <Column field="ProductName" width="300px" title="Product Name" />
-                    <Column field="QuantityPerUnit" width="200px"/>
-                    <Column field="UnitPrice" width="200px" title="Price"/>
+                    <Column field="id" title="ID" width="100px" />
+                    <Column field="products" width="500px" title="Product Ids" />
+                    <Column field="orderedAt" width="200px" title="Order Date"/>
                 </Grid>
             </div>
         );
