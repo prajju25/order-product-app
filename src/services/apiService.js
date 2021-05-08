@@ -13,9 +13,9 @@ export function searchProducts(searchStr){
 }
 
 export function orderSave(req){
-    return axios.post('/user/orders', req);
+    return axios.post('/order-application/orderSave', req);
 }
 
-export function fetchUserOrders(req){
-    return axios.post('/user/orders', req);
+export function fetchUserOrders(userId){
+    return axios.get(`/order-application/allOrders/${userId}`);
 }

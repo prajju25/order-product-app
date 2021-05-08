@@ -18,7 +18,7 @@ export class ProductSearch extends React.Component {
         super(props);
         this.state = {
             sort: [{
-                field: 'ProductName',
+                field: 'productName',
                 dir: 'asc'
             }],
             rows: [],
@@ -27,10 +27,13 @@ export class ProductSearch extends React.Component {
             productsList: products,
             orderCart: []
         };
+    }
+
+    componentWillMount(){
         fetchAllProducts().then(res=>{
             console.log(res);
             this.setState(()=>({
-                productsList: res
+                productsList: res.data
             }));
         }).catch(err=>console.log(err));
     }
@@ -40,7 +43,7 @@ export class ProductSearch extends React.Component {
     
         const rows = this.state.productsList.filter(
           product =>
-            product.ProductName.toLowerCase().indexOf(userInput.toLowerCase()) > -1
+            product.productName.toLowerCase().indexOf(userInput.toLowerCase()) > -1
         );
     
         this.setState(()=>({
@@ -60,8 +63,8 @@ export class ProductSearch extends React.Component {
 
     orderProduct = () =>{
         let req={
-            "orderId": 1,
-            "userId": "1",
+            "orderId": Math.floor(Math.random()*90000) + 10000,
+            "userId": 32324,
             "product": this.state.orderCart
         }
         orderSave(req).then(res=>{
@@ -72,7 +75,7 @@ export class ProductSearch extends React.Component {
     cancelOrder = (product) => {
         let data = this.state.orderCart;
         for (let i=0; i<data.length; i++){
-            if(data[i].ProductName === product.ProductName){
+            if(data[i].productName === product.productName){
                 data.splice(i,1);
             }
         }
@@ -98,7 +101,7 @@ export class ProductSearch extends React.Component {
                     {this.state.rows.map((product, index) => {
                     return (
                         <li className="list-item" key={index} onClick={this.onClick.bind(this)}>
-                        {product.ProductName}
+                        {product.productName}
                         </li>
                     )
                     })}
@@ -134,10 +137,10 @@ export class ProductSearch extends React.Component {
                                 sort: e.sort
                             });
                         }}>
-                            <Column field="ProductID" title="ID" width="100px" />
-                            <Column field="ProductName" width="200px" title="Product Name" />
-                            <Column field="QuantityPerUnit" width="115px"/>
-                            <Column field="UnitPrice" width="150px" title="Price"/>
+                            <Column field="id" title="ID" width="100px" />
+                            <Column field="productName" width="300px" title="Product Name" />
+                            <Column field="productType" width="180px"/>
+                            <Column field="productCost" width="150px" title="Price"/>
                             <Column title="Actions" width="150px" cell={this.ActionColumn}/>
                         </Grid>
                     </div>
@@ -146,9 +149,10 @@ export class ProductSearch extends React.Component {
                     <h3>Cart Details</h3>
                     <div>
                     <Grid style={{height:'350px', margin: '10px',width: 'auto'}} data={this.state.orderCart}>
-                        <Column field="ProductID" title="ID" width="50px" />
-                        <Column field="ProductName" width="200px" title="Product Name" />
-                        <Column field="UnitPrice" width="100px" title="Price"/>
+                        <Column field="id" title="ID" width="50px" />
+                        <Column field="productName" width="150px" title="Product Name" />
+                            <Column field="productType" width="150px"/>
+                        <Column field="productCost" width="100px" title="Price"/>
                         <Column title="Actions" width="150px" cell={this.cartColumn}/>
                     </Grid>
                     </div>
