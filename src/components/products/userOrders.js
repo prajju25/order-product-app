@@ -19,8 +19,8 @@ export class UserOrders extends React.Component {
     }
 
     componentWillMount(){
-        let userId= 32324;
-        fetchUserOrders(userId).then(res=>{
+        let user = JSON.parse(sessionStorage.getItem("user-session"));
+        fetchUserOrders(user.userID).then(res=>{
             console.log(res);
             let response = res.data !== null && res.data !== ''?res.data:[];
             this.setState(()=>({

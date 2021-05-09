@@ -84,3 +84,9 @@
 .cart-list{
   width: 40%;
 }
+.header{
+  margin: 20px;
+}
+.heading{
+  display: inline;
+}

@@ -83,9 +83,10 @@ export class ProductSearch extends React.Component {
     }
 
     orderProduct(){
+        let user = JSON.parse(sessionStorage.getItem("user-session"));
         let req={
             "orderId": Math.floor(Math.random()*90000) + 10000,
-            "userId": 32324,
+            "userId": user.userID,
             "products": this.state.orderCart
         }
         orderSave(req).then(res=>{

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { login} from '../../services/apiService'
+import { login} from '../../services/apiService';
 
 export class Login extends React.Component {
 
@@ -28,6 +28,14 @@ export class Login extends React.Component {
         login(req).then(res=>{
             console.log(res);
             //TODO: write login redirection and validation
+            if(res && res.data && res.data.isloggedIn){
+                sessionStorage.setItem("user-session", JSON.stringify(res.data));
+                if(res.data.isAdmin){
+                    this.props.history.push('/bulkUpload');
+                } else {
+                    this.props.history.push('/products');
+                }
+            }
         }).catch(err=>console.log(err));
         event.preventDefault();
     }
