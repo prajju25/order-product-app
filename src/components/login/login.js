@@ -64,7 +64,7 @@ export class Login extends React.Component {
                         <label htmlFor="pass" style={{marginRight: '43px'}}>Password:</label>
                         <input type="password" id="pass" value={this.state.pass} onChange={this.onChangeValue}/>
                     </div>
-                    {this.state.errorMsg != ''&& <div style={{color: 'red'}}>{this.state.errorMsg}</div>}
+                    {this.state.errorMsg !== ''&& <div style={{color: 'red'}}>{this.state.errorMsg}</div>}
                     <input type="submit" value="Submit"/>
                 </form>
             </div>
