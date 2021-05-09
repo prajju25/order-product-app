@@ -90,3 +90,7 @@
 .heading{
   display: inline;
 }
+.uploadProduct{
+  width: 40%;
+  margin: auto;
+}

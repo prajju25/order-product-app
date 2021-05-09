@@ -10,6 +10,7 @@ export class Header extends React.Component {
 
     handleLogout() {
         sessionStorage.removeItem("user-session");
+        this.props.isLoggedIn(false);
     }
 
     render() {
@@ -17,12 +18,9 @@ export class Header extends React.Component {
             <div className="header">
                 <h1 className="heading">Order Product App</h1>
                 <span style={{float: 'right'}}>
-                    {window.location.pathname !== '/login' ?(
+                    {this.props.isAuthenticated ?(
                         <NavLink to={"/login"} onClick={this.logout}>Logout</NavLink>
-                    ):(<>
-                    {window.location.pathname}
-                    </>
-                    )}
+                    ):(<></>)}
                 </span>
             </div>
         );

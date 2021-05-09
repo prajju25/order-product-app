@@ -5,6 +5,13 @@ import { UserOrders } from './userOrders';
 
 export class Products extends React.Component {
 
+    constructor(props){
+        super(props);
+        if(!props.isAuthenticated){
+            props.history.push('/login');
+        }
+    }
+
     render(){
         return (
             <div>

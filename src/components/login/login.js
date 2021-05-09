@@ -27,11 +27,11 @@ export class Login extends React.Component {
         };
         login(req).then(res=>{
             console.log(res);
-            //TODO: write login redirection and validation
             if(res && res.data && res.data.isloggedIn){
                 sessionStorage.setItem("user-session", JSON.stringify(res.data));
+                this.props.isLoggedIn(true);
                 if(res.data.isAdmin){
-                    this.props.history.push('/bulkUpload');
+                    this.props.history.push('/uploadProduct');
                 } else {
                     this.props.history.push('/products');
                 }

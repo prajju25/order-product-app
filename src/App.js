@@ -6,22 +6,39 @@ import './App.css';
 import { Header } from './components/header';
 import { Login } from './components/login/login';
 import { Products } from './components/products/products';
-import { BulkUpload } from './components/bulkUpload/bulkUpload';
+import { UploadProduct } from './components/uploadProduct/uploadProduct';
 
-function App() {
-  return (
-    <div className="App">
-      <Router>
-        <Header/>
-        <Switch>
-          <Route exact path="/login" component={Login}/>
-          <Route path="/products" component={Products}/>
-          <Route path="/bulkUpload" component={BulkUpload}/>
-          <Redirect exact from='/' to='/login'/>
-        </Switch>
-      </Router>
-    </div>
-  );
+export class App extends React.Component {
+
+  constructor(props){
+    super(props);
+    this.state = {
+      isAuthenticated: false
+    }
+  }
+
+  isLoggedIn(val){
+    this.setState(()=>({
+      isAuthenticated: val
+    }));
+  }
+
+  render(){
+    return (
+      <div className="App">
+        <Router>
+          <Header isAuthenticated={this.state.isAuthenticated} isLoggedIn={this.isLoggedIn.bind(this)}/>
+          <hr/>
+          <Switch>
+            <Route exact path="/login" render={(props) => <Login {...props} isLoggedIn={this.isLoggedIn.bind(this)}/>} />
+            <Route path="/products" render={(props) => <Products {...props} isAuthenticated={this.state.isAuthenticated}/>}/>
+            <Route path="/uploadProduct" render={(props) => <UploadProduct {...props} isAuthenticated={this.state.isAuthenticated}/>}/>
+            <Redirect exact from='/' to='/login'/>
+          </Switch>
+        </Router>
+      </div>
+    );
+  }
 }
 
 export default App;
