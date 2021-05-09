@@ -8,7 +8,8 @@ export class Login extends React.Component {
         super(props);
         this.state = {
             username: '',
-            pass: ''
+            pass: '',
+            errorMsg: ''
         }
         this.onChangeValue = this.onChangeValue.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
@@ -16,7 +17,8 @@ export class Login extends React.Component {
 
     onChangeValue(event){
         this.setState(()=>({
-            [event.target.id]: event.target.value
+            [event.target.id]: event.target.value,
+            errorMsg: ''
         }));
     }
 
@@ -35,8 +37,17 @@ export class Login extends React.Component {
                 } else {
                     this.props.history.push('/products');
                 }
+            } else {
+                this.setState(()=>({
+                    errorMsg: 'Invalid Username and Password. Try Again.'
+                }))
             }
-        }).catch(err=>console.log(err));
+        }).catch(err=>{
+            console.log(err)
+            this.setState(()=>({
+                errorMsg: 'Invalid Username and Password. Try Again.'
+            }))
+        });
         event.preventDefault();
     }
 
@@ -53,6 +64,7 @@ export class Login extends React.Component {
                         <label htmlFor="pass" style={{marginRight: '43px'}}>Password:</label>
                         <input type="password" id="pass" value={this.state.pass} onChange={this.onChangeValue}/>
                     </div>
+                    {this.state.errorMsg != ''&& <div style={{color: 'red'}}>{this.state.errorMsg}</div>}
                     <input type="submit" value="Submit"/>
                 </form>
             </div>
