@@ -32,7 +32,7 @@ export class UserOrders extends React.Component {
     render(){
         return (
             <div>
-                <Grid style={{height:'350px', margin: 'auto',width: '60%'}} data={orderBy(this.state.userOrders, this.state.sort)}
+                <Grid style={{height:'350px', margin: 'auto',width: '57%'}} data={orderBy(this.state.userOrders, this.state.sort)}
                 sortable={true} sort={this.state.sort}
                 onSortChange={(e) => {
                     this.setState({
@@ -40,7 +40,7 @@ export class UserOrders extends React.Component {
                     });
                 }}>
                     <Column field="orderId" title="ID" width="100px" />
-                    <Column field="orderedAt" width="200px" title="Order Date"/>
+                    <Column field="orderedAt" width="600px" title="Order Date"/>
                 </Grid>
             </div>
         );

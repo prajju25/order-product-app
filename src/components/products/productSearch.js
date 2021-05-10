@@ -89,12 +89,6 @@ export class ProductSearch extends React.Component {
         let req={
             "orderId": Math.floor(Math.random()*90000) + 10000,
             "userId": +this.state.user.userId,
-            "user": {
-                "userId": +this.state.user.userId,
-                "userName": this.state.user.userName,
-                "isAdmin": this.state.user.isAdmin === "true",
-                "createdAt": new Date(this.state.user.createdAt)
-            },
             "products": this.state.orderCart,
             "orderedAt": new Date()
         }
@@ -189,9 +183,8 @@ export class ProductSearch extends React.Component {
                     <h3>Cart Details</h3>
                     <div>
                     <Grid style={{height:'350px', margin: '10px',width: 'auto'}} data={this.state.orderCart}>
-                        <Column field="id" title="ID" width="50px" />
+                        <Column field="id" title="ID" width="100px" />
                         <Column field="productName" width="150px" title="Product Name" />
-                            <Column field="productType" width="150px"/>
                         <Column field="productCost" width="100px" title="Price"/>
                         <Column title="Actions" width="150px" cell={this.cartColumn}/>
                     </Grid>
