@@ -26,7 +26,8 @@ export class ProductSearch extends React.Component {
             userInput: "",
             productsList: [],
             orderCart: [],
-            user: user
+            user: user,
+            orderError: ''
         };
     }
 
@@ -86,21 +87,29 @@ export class ProductSearch extends React.Component {
 
     orderProduct(){
         let req={
-            //"orderId": Math.floor(Math.random()*90000) + 10000,
+            "orderId": Math.floor(Math.random()*90000) + 10000,
+            "userId": +this.state.user.userId,
             "user": {
-                "userId": this.state.user.userID,
+                "userId": +this.state.user.userId,
                 "userName": this.state.user.userName,
-                "isAdmin": this.state.user.isAdmin,
-                "createdAt": this.state.user.createdAt
+                "isAdmin": this.state.user.isAdmin === "true",
+                "createdAt": new Date(this.state.user.createdAt)
             },
-            "products": this.state.orderCart
+            "products": this.state.orderCart,
+            "orderedAt": new Date()
         }
         orderSave(req).then(res=>{
             console.log(res);
             this.setState(()=>({
-                orderCart: []
+                orderCart: [],
+                orderError: ''
             }));
-        }).catch(err=>console.log(err));
+        }).catch(err=>{
+            this.setState(()=>({
+                orderError: 'Order Failed. Due to internal issue.'
+            }))
+            console.log(err);
+        });
     }
 
     cancelOrder = (product) => {
@@ -188,6 +197,7 @@ export class ProductSearch extends React.Component {
                     </Grid>
                     </div>
                     <input type="submit" onClick={this.orderProduct.bind(this)} value="Submit Order" disabled={this.state.orderCart.length===0}/>
+                    {this.state.orderError !== ''&& <div style={{color: 'red'}}>{this.state.orderError}</div>}
                 </div>
             </div>
         );

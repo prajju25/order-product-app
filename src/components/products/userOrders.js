@@ -39,8 +39,7 @@ export class UserOrders extends React.Component {
                         sort: e.sort
                     });
                 }}>
-                    <Column field="id" title="ID" width="100px" />
-                    <Column field="products" width="500px" title="Product Ids" />
+                    <Column field="orderId" title="ID" width="100px" />
                     <Column field="orderedAt" width="200px" title="Order Date"/>
                 </Grid>
             </div>
