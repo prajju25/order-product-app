@@ -1,6 +1,7 @@
 const {createProxyMiddleware} = require('http-proxy-middleware');
 const USER_SERVICE = process.env.USER_SERVICE_URL;
 const PRODUCT_SERVICE = process.env.PRODUCT_SERVICE_URL;
+const ORDER_SERVICE = process.env.ORDER_SERVICE_URL;
 
 module.exports = function(app){
 	app.use(
@@ -22,14 +23,14 @@ module.exports = function(app){
         })
     );
     app.use(
-        createProxyMiddleware ('/order-application/orderSave',{
-        target: PRODUCT_SERVICE,
+        createProxyMiddleware ('/orderSave',{
+        target: ORDER_SERVICE,
         changeOrigin: true
         })
     );
     app.use(
-        createProxyMiddleware ('/order-application/allOrders',{
-        target: PRODUCT_SERVICE,
+        createProxyMiddleware ('/orders',{
+        target: ORDER_SERVICE,
         changeOrigin: true
         })
     );

@@ -24,15 +24,15 @@ export class Login extends React.Component {
 
     onSubmit(event){
         let req = {
-            username: this.state.username,
-            encPassword: window.btoa(this.state.pass)
+            userName: this.state.username,
+            password: this.state.pass//window.btoa(this.state.pass)
         };
         login(req).then(res=>{
             console.log(res);
-            if(res && res.data && res.data.isloggedIn){
+            if(res && res.data && res.data.isSuccess === 'true'){
                 sessionStorage.setItem("user-session", JSON.stringify(res.data));
                 this.props.isLoggedIn(true);
-                if(res.data.isAdmin){
+                if(res.data.isAdmin === 'true'){
                     this.props.history.push('/uploadProduct');
                 } else {
                     this.props.history.push('/products');

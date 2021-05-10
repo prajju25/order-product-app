@@ -8,14 +8,18 @@ export function fetchAllProducts(){
     return axios.get('/product/all');
 }
 
-export function searchProducts(searchStr){
-    return axios.get(`/product/product/${searchStr}`);
+export function searchProducts(searchStr, userName){
+    return axios.get(`/product/product/${searchStr}`, {
+        headers: {
+            'user-name': userName
+        }
+    });
 }
 
 export function orderSave(req){
-    return axios.post('/order-application/orderSave', req);
+    return axios.post('/orderSave', req);
 }
 
 export function fetchUserOrders(userId){
-    return axios.get(`/order-application/allOrders/${userId}`);
+    return axios.get(`/orders/${userId}`);
 }

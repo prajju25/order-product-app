@@ -15,6 +15,7 @@ export class ProductSearch extends React.Component {
     );
     constructor(props){
         super(props);
+        let user = JSON.parse(sessionStorage.getItem("user-session"));
         this.state = {
             sort: [{
                 field: 'productName',
@@ -24,7 +25,8 @@ export class ProductSearch extends React.Component {
             loading: false,
             userInput: "",
             productsList: [],
-            orderCart: []
+            orderCart: [],
+            user: user
         };
     }
 
@@ -46,7 +48,7 @@ export class ProductSearch extends React.Component {
               product.productName.toLowerCase().indexOf(userInput.toLowerCase()) > -1
         ); */
         if(userInput && userInput !== ''){
-            searchProducts(userInput).then((res)=>{
+            searchProducts(userInput, this.state.user.userName).then((res)=>{
                 console.log(res);
                 let response = res.data !== null && res.data !== '' ? res.data:[];
                 this.setState(()=>({
@@ -73,7 +75,7 @@ export class ProductSearch extends React.Component {
           loading: false,
           userInput: event.target.innerText,
         }));
-        searchProducts(event.target.innerText).then((res)=>{
+        searchProducts(event.target.innerText, this.state.user.userName).then((res)=>{
             console.log(res);
             let response = res.data !== null && res.data !== '' ? res.data:[];
             this.setState(()=>({
@@ -83,10 +85,14 @@ export class ProductSearch extends React.Component {
     }
 
     orderProduct(){
-        let user = JSON.parse(sessionStorage.getItem("user-session"));
         let req={
-            "orderId": Math.floor(Math.random()*90000) + 10000,
-            "userId": user.userID,
+            //"orderId": Math.floor(Math.random()*90000) + 10000,
+            "user": {
+                "userId": this.state.user.userID,
+                "userName": this.state.user.userName,
+                "isAdmin": this.state.user.isAdmin,
+                "createdAt": this.state.user.createdAt
+            },
             "products": this.state.orderCart
         }
         orderSave(req).then(res=>{
@@ -163,8 +169,8 @@ export class ProductSearch extends React.Component {
                             });
                         }}>
                             <Column field="id" title="ID" width="100px" />
-                            <Column field="productName" width="300px" title="Product Name" />
-                            <Column field="productType" width="180px"/>
+                            <Column field="productName" width="250px" title="Product Name" />
+                            <Column field="productType" width="120px"/>
                             <Column field="productCost" width="150px" title="Price"/>
                             <Column title="Actions" width="150px" cell={this.ActionColumn}/>
                         </Grid>
