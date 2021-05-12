@@ -53,20 +53,25 @@ export class Login extends React.Component {
 
     render(){
         return (
-            <div>
-                <h3>Login</h3>
-                <form onSubmit={this.onSubmit}>
-                    <div>
-                        <label htmlFor="username" style={{marginRight: '35px'}}>UserName:</label>
-                        <input type="text" id="username" value={this.state.uName} onChange={this.onChangeValue}/>
-                    </div>
-                    <div>
-                        <label htmlFor="pass" style={{marginRight: '43px'}}>Password:</label>
-                        <input type="password" id="pass" value={this.state.pass} onChange={this.onChangeValue}/>
-                    </div>
-                    {this.state.errorMsg !== ''&& <div style={{color: 'red'}}>{this.state.errorMsg}</div>}
-                    <input type="submit" value="Submit"/>
-                </form>
+            <div className="signin">
+                <h3>Verizon Enterprise Login</h3>
+                <div className="login-page">
+                    <form onSubmit={this.onSubmit}>
+                        <div className="form-field">
+                            <input type="text" id="username" placeholder="Verizon User Id" value={this.state.uName} onChange={this.onChangeValue}/>
+                        </div>
+                        <div className="form-field">
+                            <input type="password" id="pass" placeholder="Password" value={this.state.pass} onChange={this.onChangeValue}/>
+                        </div>
+                        {this.state.errorMsg !== ''&& <div style={{color: 'red'}}>{this.state.errorMsg}</div>}
+                        <input className="red-button" type="submit" value="Sign In"/>
+                    </form>
+                </div>
+                <div className="register">
+                    <span>New to Verizon Application ?</span><br/>
+                    <span>Click on Sign In</span><br/>
+                    <input className="red-button" type="submit" value="Sign Up"/>
+                </div>
             </div>
         );
     }

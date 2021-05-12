@@ -6,20 +6,20 @@ export const ActionCell = props => {
 
   return isOrder ? (
     <td className="k-command-cell">
-      <button
+      <button style={{fontSize: '11px'}}
         className="k-button k-sgrid-save-command"
         onClick={() => props.addToCart(dataItem)}
       >
-        Order
+        Add to Cart
       </button>
     </td>
   ) : (
     <td className="k-command-cell">
-      <button
+      <button style={{fontSize: '11px'}}
         className="k-button k-grid-cancel-command"
         onClick={() => props.cancelOrder(dataItem)}
       >
-        Cancel Order
+        Remove Item
       </button>
     </td>
   );

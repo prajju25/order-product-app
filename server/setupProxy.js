@@ -3,7 +3,7 @@ const USER_SERVICE = process.env.USER_SERVICE_URL;
 const PRODUCT_SERVICE = process.env.PRODUCT_SERVICE_URL;
 const ORDER_SERVICE = process.env.ORDER_SERVICE_URL;
 
-module.exports = function(app){
+exports.setupProxy = function(app){
 	app.use(
 		createProxyMiddleware ('/user/login',{
 		target: USER_SERVICE,

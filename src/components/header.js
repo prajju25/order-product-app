@@ -16,12 +16,15 @@ export class Header extends React.Component {
     render() {
         return (
             <div className="header">
-                <h1 className="heading">Order Product App</h1>
-                <span style={{float: 'right'}}>
-                    {this.props.isAuthenticated ?(
-                        <NavLink to={"/login"} onClick={this.logout}>Logout</NavLink>
-                    ):(<></>)}
-                </span>
+                <img className="logo" src="./verizon-logo.png" alt="Verizon Logo"/>
+                {this.props.isAuthenticated ?(
+                    <div style={{float: 'right', width: '30%'}}>
+                        <div className="profile">
+                            
+                        </div>
+                        <NavLink style={{float: 'right'}} to={"/login"} onClick={this.logout}>Logout</NavLink>
+                    </div>
+                ):(<></>)}
             </div>
         );
     }

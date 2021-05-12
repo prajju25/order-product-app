@@ -17,9 +17,9 @@ export class Products extends React.Component {
             <div>
                 <div className="nav-bar">
                     <div className="nav-list"><NavLink to={"/products/search"} 
-                    activeStyle={{ backgroundColor: '#d4d4d4'}}>Product Search</NavLink></div>|
+                    activeStyle={{color: '#ed0909'}}><strong>Product Search</strong></NavLink></div>
                     <div className="nav-list"><NavLink to={"/products/orders"} 
-                    activeStyle={{ backgroundColor: '#d4d4d4'}}>User Orders</NavLink></div>
+                    activeStyle={{color: '#ed0909'}}><strong>User Orders</strong></NavLink></div>
                 </div>
                 <hr/>
                 <Switch>

@@ -27,6 +27,7 @@ export class ProductSearch extends React.Component {
             productsList: [],
             orderCart: [],
             user: user,
+            successMsg: '',
             orderError: ''
         };
     }
@@ -42,7 +43,7 @@ export class ProductSearch extends React.Component {
     }
 
     onChange(event){
-        const userInput = event.currentTarget.value;
+        const userInput = event !== '' ? event.currentTarget.value: '';
         
         /* const rows = this.state.productsList.filter(
             product =>
@@ -66,17 +67,19 @@ export class ProductSearch extends React.Component {
                 }));
             }).catch(err=>console.log(err));
         }
-        this.setState(()=>({
-            userInput: event.target.value,
-        }));
+        if(event !== ''){
+            this.setState(()=>({
+                userInput: event.target.value,
+            }));
+        }
     }
     
     onClick(event){
         this.setState(()=>({
           loading: false,
-          userInput: event.target.innerText,
+          userInput: event.target.innerText ==='' ? this.state.userInput : event.target.innerText,
         }));
-        searchProducts(event.target.innerText, this.state.user.userName).then((res)=>{
+        searchProducts(this.state.userInput, this.state.user.userName).then((res)=>{
             console.log(res);
             let response = res.data !== null && res.data !== '' ? res.data:[];
             this.setState(()=>({
@@ -96,11 +99,12 @@ export class ProductSearch extends React.Component {
             console.log(res);
             this.setState(()=>({
                 orderCart: [],
+                successMsg: `Order success!! Order ID: ${res.data.orderId}`,
                 orderError: ''
             }));
         }).catch(err=>{
             this.setState(()=>({
-                orderError: 'Order Failed. Due to internal issue.'
+                orderError: 'Order Failed.'
             }))
             console.log(err);
         });
@@ -124,6 +128,15 @@ export class ProductSearch extends React.Component {
         this.setState(()=>({
             orderCart: data
         }));
+    }
+
+    clearMsg(param){
+        this.setState(()=>({
+            [param.target.id]: ''
+        }));
+        if(param.target.id === 'userInput'){
+            this.onChange('');
+        }
     }
 
     render(){
@@ -152,7 +165,7 @@ export class ProductSearch extends React.Component {
         return (
             <div className="product-container">
                 <div className="product-list">
-                    <div>
+                    <div className="search-bar">
                     <React.Fragment>
                         <label htmlFor="search">Search Product:</label>
                         <input id="search" type="search" onChange={this.onChange.bind(this)} 
@@ -161,10 +174,14 @@ export class ProductSearch extends React.Component {
                             && this.state.userInput ? 'show' : 'hidden')}>
                             {autoComplete}
                         </div>
+                        <input className="red-button small" type="submit" value="Search" 
+                        onClick={this.onClick.bind(this)}/>
+                        <input id="userInput" className="black-button small" type="submit" 
+                        value="Reset" onClick={this.clearMsg.bind(this)}/>
                     </React.Fragment>
                     </div>
                     <div>
-                        <Grid style={{height:'350px', margin: '40px 10px 10px 10px',width: 'auto'}} data={orderBy(this.state.productsList, this.state.sort)}
+                        <Grid style={{height:'380px', margin: '20px 0px 0px 20px',width: 'auto'}} data={orderBy(this.state.productsList, this.state.sort)}
                         sortable={true} sort={this.state.sort}
                         onSortChange={(e) => {
                             this.setState({
@@ -172,25 +189,29 @@ export class ProductSearch extends React.Component {
                             });
                         }}>
                             <Column field="id" title="ID" width="100px" />
-                            <Column field="productName" width="250px" title="Product Name" />
+                            <Column field="productName" width="200px" title="Product Name" />
                             <Column field="productType" width="120px"/>
                             <Column field="productCost" width="150px" title="Price"/>
-                            <Column title="Actions" width="150px" cell={this.ActionColumn}/>
+                            <Column title="Actions" width="120px" cell={this.ActionColumn}/>
                         </Grid>
                     </div>
                 </div>
                 <div className="cart-list">
-                    <h3>Cart Details</h3>
-                    <div>
-                    <Grid style={{height:'350px', margin: '10px',width: 'auto'}} data={this.state.orderCart}>
-                        <Column field="id" title="ID" width="100px" />
-                        <Column field="productName" width="150px" title="Product Name" />
-                        <Column field="productCost" width="100px" title="Price"/>
-                        <Column title="Actions" width="150px" cell={this.cartColumn}/>
-                    </Grid>
+                    <div className="cart-header">
+                        <strong>Cart Items</strong>               
+                        <input type="submit" className="red-button" onClick={this.orderProduct.bind(this)} value="Submit Order" disabled={this.state.orderCart.length===0}/>
+                        {this.state.orderError !== ''&& <div className="error-msg" style={{color: 'red'}}>{this.state.orderError}
+                        <input id="orderError" type="submit" style={{marginLeft: '20px'}} onClick={this.clearMsg.bind(this)} value="X"/></div>}
+                        {this.state.successMsg !== ''&& <div className="error-msg" style={{color: 'green'}}>{this.state.successMsg}
+                        <input id="successMsg" type="submit" style={{marginLeft: '20px'}} onClick={this.clearMsg.bind(this)} value="X"/></div>}
                     </div>
-                    <input type="submit" onClick={this.orderProduct.bind(this)} value="Submit Order" disabled={this.state.orderCart.length===0}/>
-                    {this.state.orderError !== ''&& <div style={{color: 'red'}}>{this.state.orderError}</div>}
+                    <div>
+                        <Grid style={{height:'380px', margin: '15px 10px 10px 10px',width: 'auto'}} data={this.state.orderCart}>
+                            <Column title="Actions" width="120px" cell={this.cartColumn}/>
+                            <Column field="productName" width="200px" title="Product Name" />
+                            <Column field="productCost" width="100px" title="Price"/>
+                        </Grid>
+                    </div>
                 </div>
             </div>
         );
