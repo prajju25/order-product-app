@@ -7,19 +7,22 @@ import { Header } from './components/header';
 import { Login } from './components/login/login';
 import { Products } from './components/products/products';
 import { UploadProduct } from './components/uploadProduct/uploadProduct';
+import { Register } from "./components/login/register";
 
 export class App extends React.Component {
 
   constructor(props){
     super(props);
     this.state = {
-      isAuthenticated: false
+      isAuthenticated: false,
+      user: null
     }
   }
 
-  isLoggedIn(val){
+  isLoggedIn(val, user){
     this.setState(()=>({
-      isAuthenticated: val
+      isAuthenticated: val,
+      user: user
     }));
   }
 
@@ -27,10 +30,11 @@ export class App extends React.Component {
     return (
       <div className="App">
         <Router>
-          <Header isAuthenticated={this.state.isAuthenticated} isLoggedIn={this.isLoggedIn.bind(this)}/>
+          <Header isAuthenticated={this.state.isAuthenticated} user={this.state.user} isLoggedIn={this.isLoggedIn.bind(this)}/>
           <hr/>
           <Switch>
             <Route exact path="/login" render={(props) => <Login {...props} isLoggedIn={this.isLoggedIn.bind(this)}/>} />
+            <Route path="/register" render={(props)=> <Register {...props} />}/>
             <Route path="/products" render={(props) => <Products {...props} isAuthenticated={this.state.isAuthenticated}/>}/>
             <Route path="/uploadProduct" render={(props) => <UploadProduct {...props} isAuthenticated={this.state.isAuthenticated}/>}/>
             <Redirect exact from='/' to='/login'/>

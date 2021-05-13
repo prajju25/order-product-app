@@ -7,7 +7,7 @@ export const ActionCell = props => {
   return isOrder ? (
     <td className="k-command-cell">
       <button style={{fontSize: '11px'}}
-        className="k-button k-sgrid-save-command"
+        className="k-button k-sgrid-save-command red-button small"
         onClick={() => props.addToCart(dataItem)}
       >
         Add to Cart
@@ -16,7 +16,7 @@ export const ActionCell = props => {
   ) : (
     <td className="k-command-cell">
       <button style={{fontSize: '11px'}}
-        className="k-button k-grid-cancel-command"
+        className="k-button k-grid-cancel-command black-button small"
         onClick={() => props.cancelOrder(dataItem)}
       >
         Remove Item

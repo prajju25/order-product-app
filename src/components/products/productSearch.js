@@ -189,8 +189,8 @@ export class ProductSearch extends React.Component {
                             });
                         }}>
                             <Column field="id" title="ID" width="100px" />
-                            <Column field="productName" width="200px" title="Product Name" />
-                            <Column field="productType" width="120px"/>
+                            <Column field="productName" width="230px" title="Product Name" />
+                            <Column field="productType" width="140px"/>
                             <Column field="productCost" width="150px" title="Price"/>
                             <Column title="Actions" width="120px" cell={this.ActionColumn}/>
                         </Grid>
@@ -207,8 +207,8 @@ export class ProductSearch extends React.Component {
                     </div>
                     <div>
                         <Grid style={{height:'380px', margin: '15px 10px 10px 10px',width: 'auto'}} data={this.state.orderCart}>
-                            <Column title="Actions" width="120px" cell={this.cartColumn}/>
-                            <Column field="productName" width="200px" title="Product Name" />
+                            <Column title="Actions" width="150px" cell={this.cartColumn}/>
+                            <Column field="productName" width="230px" title="Product Name" />
                             <Column field="productCost" width="100px" title="Price"/>
                         </Grid>
                     </div>

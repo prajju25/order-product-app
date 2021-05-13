@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { login} from '../../services/apiService';
+import { login } from '../../services/apiService';
 
 export class Login extends React.Component {
 
@@ -31,7 +31,7 @@ export class Login extends React.Component {
             console.log(res);
             if(res && res.data && res.data.isSuccess === 'true'){
                 sessionStorage.setItem("user-session", JSON.stringify(res.data));
-                this.props.isLoggedIn(true);
+                this.props.isLoggedIn(true, res.data);
                 if(res.data.isAdmin === 'true'){
                     this.props.history.push('/uploadProduct');
                 } else {
@@ -49,6 +49,10 @@ export class Login extends React.Component {
             }))
         });
         event.preventDefault();
+    }
+
+    redirect(){
+        this.props.history.push('/register');
     }
 
     render(){
@@ -69,8 +73,8 @@ export class Login extends React.Component {
                 </div>
                 <div className="register">
                     <span>New to Verizon Application ?</span><br/>
-                    <span>Click on Sign In</span><br/>
-                    <input className="red-button" type="submit" value="Sign Up"/>
+                    <span>Click on Register</span><br/>
+                    <input className="red-button" type="submit" value="Register" onClick={this.redirect.bind(this)}/>
                 </div>
             </div>
         );

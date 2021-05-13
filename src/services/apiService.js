@@ -4,6 +4,10 @@ export function login(req){
     return axios.post('/user/login', req);
 }
 
+export function createUser(req){
+    return axios.post('/user/createUser', req);
+}
+
 export function fetchAllProducts(){
     return axios.get('/product/all');
 }

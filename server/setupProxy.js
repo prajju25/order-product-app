@@ -11,6 +11,12 @@ exports.setupProxy = function(app){
 		})
     );
     app.use(
+		createProxyMiddleware ('/user/createUser',{
+		target: USER_SERVICE,
+		changeOrigin: true
+		})
+    );
+    app.use(
         createProxyMiddleware ('/product/all',{
         target: PRODUCT_SERVICE,
         changeOrigin: true

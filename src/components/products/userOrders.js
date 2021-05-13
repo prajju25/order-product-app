@@ -2,8 +2,17 @@ import React from 'react';
 
 import { Grid, GridColumn as Column } from '@progress/kendo-react-grid';
 import { orderBy } from '@progress/kendo-data-query';
+import { ExcelExport, ExcelExportColumn } from "@progress/kendo-react-excel-export";
 
-import { fetchUserOrders } from '../../services/apiService'
+import { fetchUserOrders } from '../../services/apiService';
+
+const _exporter = React.createRef();
+
+const exportExcel = () => {
+    if (_exporter.current) {
+    _exporter.current.save();
+    }
+};
 
 export class UserOrders extends React.Component {
 
@@ -32,6 +41,13 @@ export class UserOrders extends React.Component {
     render(){
         return (
             <div>
+                <div>
+                    <button className="k-button red-button small ml20" onClick={exportExcel}>Export</button>
+                    <ExcelExport data={this.state.userOrders} fileName="User-Orders.xlsx" ref={_exporter}>
+                        <ExcelExportColumn field="orderId" title="ID" width={200}/>
+                        <ExcelExportColumn field="orderedAt"title="Order Date" width={350}/>
+                    </ExcelExport>
+                </div>
                 <Grid style={{height:'350px', margin: '20px',width: '80%'}} data={orderBy(this.state.userOrders, this.state.sort)}
                 sortable={true} sort={this.state.sort}
                 onSortChange={(e) => {
